@@ -29,11 +29,12 @@ import robot.Ports.OI;
 public class Robot extends CommandRobot implements Logged {
   // INPUT DEVICES
   private final CommandXboxController driver = new CommandXboxController(OI.DRIVER);
-
+  private final CommandXboxController operator = new CommandXboxController(OI.OPERATOR);
   private final PowerDistribution pdh = new PowerDistribution();
 
   // SUBSYSTEMS
   Drive drive = new Drive();
+  
 
   // COMMANDS
 
@@ -48,10 +49,7 @@ public class Robot extends CommandRobot implements Logged {
   private void configureGameBehavior() {
     // TODO: Add configs for all additional libraries, components, intersubsystem interaction
     // Configure logging with DataLogManager, Monologue, URCL, and FaultLogger
-    private void configureBindings() {
-      drive.setDefaultCommand(drive.drive(driver::getLeftY, driver::getRightY));
-    }
-    //NOT SURE ABOUT THIS PLACEMENT, MAKE SURE TO CHECK
+    
     DataLogManager.start();
     Monologue.setupMonologue(this, "/Robot", false, true);
     addPeriodic(Monologue::updateAll, PERIOD.in(Seconds));
@@ -74,7 +72,9 @@ public class Robot extends CommandRobot implements Logged {
   }
 
   /** Configures trigger -> command bindings. */
-  private void configureBindings() {}
+  private void configureBindings() {
+    drive.setDefaultCommand(drive.drive(driver::getLeftY, driver::getRightY));
+  }
 
   /**
    * Command factory to make both controllers rumble.
